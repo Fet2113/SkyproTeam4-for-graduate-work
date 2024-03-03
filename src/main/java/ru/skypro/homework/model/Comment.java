@@ -1,25 +1,36 @@
 package ru.skypro.homework.model;
 
-import javax.persistence.*;
+import lombok.*;
 
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "comments")
 public class Comment {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long author;
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    @ToString.Exclude
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
 
     @Column(nullable = false)
-    private String authorImage;
-
-    @Column(nullable = false)
-    private String authorFirstName;
-
-    @Column(nullable = false)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private String text;
